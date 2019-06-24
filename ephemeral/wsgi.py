@@ -13,7 +13,7 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from flask import Flask
+from flask import Flask, render_template
 
 application = Flask(__name__)
 
@@ -21,3 +21,8 @@ application = Flask(__name__)
 @application.route('/')
 def hello_world():
     return 'Hello, World!'
+
+
+@application.route('/show')
+def show():
+    return render_template('pin.html')
