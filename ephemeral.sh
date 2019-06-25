@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/usr/bin/env sh
 
 # Copyright (C) 2019 Sergej Alikov <sergej.alikov@gmail.com>
 
@@ -15,7 +15,7 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-set -euo pipefail
+set -eu
 
 BIND="${1:-0.0.0.0:8080}"
 

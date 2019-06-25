@@ -1,0 +1,11 @@
+FROM python:3.7.3-alpine
+
+COPY . /dist
+
+WORKDIR /dist
+
+RUN apk add --no-cache gcc g++ make libffi-dev openssl-dev && python3 setup.py install && apk del gcc g++ make libffi-dev openssl-dev
+
+EXPOSE 8080
+
+ENTRYPOINT ["ephemeral.sh", "0.0.0.0:8080"]
