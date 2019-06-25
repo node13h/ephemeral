@@ -13,7 +13,7 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 
 application = Flask(__name__)
 
@@ -23,6 +23,10 @@ def hello_world():
     return 'Hello, World!'
 
 
-@application.route('/show')
-def show():
+@application.route('/show/<message_id>', methods=['POST', 'GET'])
+def show(message_id):
+    if request.method == 'POST':
+        if request.form['pin'] == '123456':
+            return render_template('show.html', message='SECRET ({})'.format(message_id))
+
     return render_template('pin.html')
