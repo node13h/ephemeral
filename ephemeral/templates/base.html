@@ -1,0 +1,10 @@
+<!doctype html>
+<title>Ephemeral</title>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="{{ url_for('static', filename='node_modules/normalize.css/normalize.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
+<section class="content">
+  <div class="centered">
+    {% block content %}{% endblock %}
+  </div>
+</section>
