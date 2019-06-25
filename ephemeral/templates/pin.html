@@ -1,9 +1,14 @@
 {% extends 'base.html' %}
 
 {% block content %}
-  <form method="post">
-    <label for="pin">PIN</label>
-    <input type="password" name="pin" id="pin" maxlength="6" required>
-    <input type="submit" value="Show">
-  </form>
+  <p>
+    <strong>Message will self-destruct once you view it</strong>
+  </p>
+  <p>
+    <form method="post">
+      <label for="pin">PIN</label>
+      <input type="password" name="pin" id="pin" maxlength="6" required>
+      <input type="submit" value="Show">
+    </form>
+  </p>
 {% endblock %}

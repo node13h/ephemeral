@@ -13,20 +13,41 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from flask import Flask, render_template, request
+import logging
+
+from flask import Flask, render_template, request, make_response
+
+from ephemeral.data import get_message, MessageNotFoundError, IncorrectPinError
+
 
 application = Flask(__name__)
+
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 
 @application.route('/')
 def hello_world():
-    return 'Hello, World!'
+    return render_template('root.html')
 
 
-@application.route('/show/<message_id>', methods=['POST', 'GET'])
-def show(message_id):
+@application.route('/show/<msg_id>', methods=['POST', 'GET'])
+def show(msg_id):
     if request.method == 'POST':
-        if request.form['pin'] == '123456':
-            return render_template('show.html', message='SECRET ({})'.format(message_id))
+        try:
+            message = get_message(msg_id, request.form['pin'])
+        except MessageNotFoundError:
+            return render_template('not_found.html', msg_id=msg_id), 404
+        except IncorrectPinError:
+            return render_template('pin.html')
+
+        logger.info('SHOW {}'.format(msg_id))
+        response = make_response(render_template('show.html', message=message))
+
+        response.headers['Cache-Control'] = 'no-cache, no-store, must-revalidate'
+        response.headers['Pragma'] = 'no-cache'
+        response.headers['Expires'] = '0'
+
+        return response
 
     return render_template('pin.html')

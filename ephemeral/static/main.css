@@ -4,10 +4,19 @@
     height: 100%;
     width: 100%;
 }
-.centered
-{
+
+.centered {
     display: table-cell;
     vertical-align: middle;
     margin: 0 auto;
     text-align: center;
+}
+
+.error {
+    font-weight: bold;
+    color: red;
+}
+
+.message {
+    font-size: larger;
 }

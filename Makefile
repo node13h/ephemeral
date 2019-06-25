@@ -1,4 +1,4 @@
-.PHONE: assets sdist dev-server
+.PHONE: assets sdist dev-server test develop
 
 all:
 	true
@@ -11,3 +11,9 @@ sdist: assets
 
 dev-server:
 	FLASK_APP=ephemeral.wsgi:application FLASK_ENV=development flask run
+
+test:
+	pytest
+
+develop:
+	pip3 install -r requirements_dev.txt
