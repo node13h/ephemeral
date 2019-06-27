@@ -15,9 +15,10 @@
 
 import logging
 
-from flask import Flask, render_template, request, make_response
+from flask import Flask, render_template, request, make_response, redirect, url_for
 
-from ephemeral.data import get_message, MessageNotFoundError, IncorrectPinError
+from ephemeral.data import (
+    get_message, add_message, MessageNotFoundError, IncorrectPinError)
 
 
 application = Flask(__name__)
@@ -27,7 +28,7 @@ logger = logging.getLogger(__name__)
 
 
 @application.route('/')
-def hello_world():
+def root():
     return render_template('root.html')
 
 
@@ -51,3 +52,18 @@ def show(msg_id):
         return response
 
     return render_template('pin.html')
+
+
+@application.route('/link/<msg_id>')
+def link(msg_id):
+    return render_template('link.html', url='{}{}'.format(
+        request.url_root.rstrip('/'), url_for('show', msg_id=msg_id)))
+
+
+@application.route('/add', methods=['POST', 'GET'])
+def add():
+    if request.method == 'POST':
+        msg_id = add_message(request.form['body'], request.form['pin'])
+        return redirect(url_for('link', msg_id=msg_id))
+    else:
+        return render_template('add.html')
