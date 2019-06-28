@@ -6,6 +6,7 @@ services:
     build: .
     environment:
       EPHEMERAL_REDIS_HOST: redis
+      EPHEMERAL_SECRET_KEY: "${EPHEMERAL_SECRET_KEY}"
     ports:
       - "8080:8080"
     links:

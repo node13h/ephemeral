@@ -7,6 +7,7 @@
       <input type="text" name="body" id="body" required>
       <label for="pin">PIN</label>
       <input type="password" name="pin" id="pin" maxlength="6" required>
+      <input type="hidden" name="_csrf_token" value="{{csrf_token}}" />
       <input type="submit" value="Add">
     </form>
   </p>
