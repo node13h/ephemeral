@@ -48,4 +48,5 @@ setup(
 
     scripts=['ephemeral.sh'],
 
+    zip_safe=False,
 )
