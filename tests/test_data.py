@@ -20,14 +20,7 @@ import pytest
 import ephemeral.data as ed
 
 
-class StoreMock(dict):
-    def getset(self, key, new_value):
-        result = self.get(key, None)
-        self[key] = new_value
-
-        return result
-
-@patch.object(ed, 'store', StoreMock())
+@patch.object(ed, 'store', dict())
 def test_can_get_added():
     msg = 'The quick brown fox jumps over the lazy dog'
     pin = '123789'
@@ -37,7 +30,7 @@ def test_can_get_added():
     assert ed.get_message(msg_id, pin) == msg
 
 
-@patch.object(ed, 'store', StoreMock())
+@patch.object(ed, 'store', dict())
 def test_can_get_multiple():
     msg1 = 'The quick brown fox jumps over the lazy dog'
     pin1 = '123789'
@@ -52,7 +45,7 @@ def test_can_get_multiple():
     assert ed.get_message(msg_id2, pin2) == msg2
 
 
-@patch.object(ed, 'store', StoreMock())
+@patch.object(ed, 'store', dict())
 def test_unicode_supported():
     msg = 'a\xac\u1234\u20ac\U00008000'
     pin = '123789'
@@ -62,7 +55,7 @@ def test_unicode_supported():
     assert ed.get_message(msg_id, pin) == msg
 
 
-@patch.object(ed, 'store', StoreMock())
+@patch.object(ed, 'store', dict())
 def test_incorrect_pin_raises():
     msg_id = ed.add_message('TEST', '123456')
 
@@ -70,13 +63,13 @@ def test_incorrect_pin_raises():
         ed.get_message(msg_id, '654321')
 
 
-@patch.object(ed, 'store', StoreMock())
+@patch.object(ed, 'store', dict())
 def test_non_existing_id_raises():
     with pytest.raises(ed.MessageNotFoundError):
         ed.get_message('NON-EXISTING-ID', '000000')
 
 
-@patch.object(ed, 'store', StoreMock())
+@patch.object(ed, 'store', dict())
 def test_get_twice_raises():
     msg_id = ed.add_message('TEST', '123456')
 

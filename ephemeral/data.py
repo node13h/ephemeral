@@ -64,10 +64,9 @@ def b64encode(b):
 
 def get_message(msg_id, pin):
 
-    msg = store.getset(msg_id, '')
-    del store[msg_id]
-
-    if msg is None:
+    try:
+        msg = store[msg_id]
+    except KeyError:
         raise MessageNotFoundError()
 
     msg = json.loads(msg)
@@ -81,6 +80,9 @@ def get_message(msg_id, pin):
 
     if b64decode(msg['hash']) != sha256(padded_utf8_body):
         raise IncorrectPinError()
+
+    # Delete only when PIN has been confirmed to be correct
+    del store[msg_id]
 
     return unpad(padded_utf8_body).decode('utf-8')
 
