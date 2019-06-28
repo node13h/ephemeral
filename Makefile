@@ -1,4 +1,7 @@
-.PHONE: assets sdist dev-server test develop
+DOCKER_TAG := latest
+DOCKER_REPOSITORY := docker.io/alikov/ephemeral
+
+.PHONE: assets sdist dev-server test develop build-image push-image
 
 all:
 	true
@@ -17,3 +20,9 @@ test:
 
 develop:
 	pip3 install -r requirements_dev.txt
+
+build-image:
+	docker build -t $(DOCKER_REPOSITORY):$(DOCKER_TAG) .
+
+push-image: build-image
+	docker push $(DOCKER_REPOSITORY):$(DOCKER_TAG)
