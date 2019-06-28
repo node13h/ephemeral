@@ -13,18 +13,34 @@
 # You should have received a copy of the GNU Affero General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+import os
 import logging
+import base64
 
-from flask import Flask, render_template, request, make_response, redirect, url_for
+from flask import (
+    Flask, render_template, request, make_response, redirect, url_for, session, abort)
+from Crypto import Random
 
 from ephemeral.data import (
     get_message, add_message, MessageNotFoundError, IncorrectPinError)
 
-
 application = Flask(__name__)
+application.secret_key = os.environ.get('EPHEMERAL_SECRET_KEY', None)
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
+
+
+@application.before_request
+def csrf_protect():
+    if request.method == 'GET':
+        if '_csrf_token' not in session:
+            session['_csrf_token'] = base64.b64encode(Random.new().read(32)).decode('latin-1')
+
+    elif request.method == "POST":
+        token = session.get('_csrf_token', None)
+        if not token or token != request.form.get('_csrf_token'):
+            abort(403)
 
 
 @application.route('/')
@@ -40,18 +56,18 @@ def show(msg_id):
         except MessageNotFoundError:
             return render_template('not_found.html', msg_id=msg_id), 404
         except IncorrectPinError:
-            return render_template('pin.html')
+            pass
+        else:
+            logger.info('SHOW {}'.format(msg_id))
+            response = make_response(render_template('show.html', message=message))
 
-        logger.info('SHOW {}'.format(msg_id))
-        response = make_response(render_template('show.html', message=message))
+            response.headers['Cache-Control'] = 'no-cache, no-store, must-revalidate'
+            response.headers['Pragma'] = 'no-cache'
+            response.headers['Expires'] = '0'
 
-        response.headers['Cache-Control'] = 'no-cache, no-store, must-revalidate'
-        response.headers['Pragma'] = 'no-cache'
-        response.headers['Expires'] = '0'
+            return response
 
-        return response
-
-    return render_template('pin.html')
+    return render_template('pin.html', csrf_token=session.get('_csrf_token', None))
 
 
 @application.route('/link/<msg_id>')
@@ -66,4 +82,4 @@ def add():
         msg_id = add_message(request.form['body'], request.form['pin'])
         return redirect(url_for('link', msg_id=msg_id))
     else:
-        return render_template('add.html')
+        return render_template('add.html', csrf_token=session.get('_csrf_token', None))
