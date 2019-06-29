@@ -20,11 +20,14 @@ import base64
 from flask import (
     Flask, render_template, request, make_response, redirect, url_for, session, abort)
 from Crypto import Random
+from werkzeug.middleware.proxy_fix import ProxyFix
 
 from ephemeral.data import (
     get_message, add_message, MessageNotFoundError, IncorrectPinError)
 
 application = Flask(__name__)
+application.wsgi_app = ProxyFix(
+    application.wsgi_app, x_for=1, x_host=1, x_proto=1, x_port=1)
 application.secret_key = os.environ.get('EPHEMERAL_SECRET_KEY', None)
 
 logging.basicConfig(level=logging.INFO)
@@ -35,7 +38,8 @@ logger = logging.getLogger(__name__)
 def csrf_protect():
     if request.method == 'GET':
         if '_csrf_token' not in session:
-            session['_csrf_token'] = base64.b64encode(Random.new().read(32)).decode('latin-1')
+            random_token = Random.new().read(32)
+            session['_csrf_token'] = base64.b64encode(random_token).decode('latin-1')
 
     elif request.method == "POST":
         token = session.get('_csrf_token', None)
@@ -72,8 +76,8 @@ def show(msg_id):
 
 @application.route('/link/<msg_id>')
 def link(msg_id):
-    return render_template('link.html', url='{}{}'.format(
-        request.url_root.rstrip('/'), url_for('show', msg_id=msg_id)))
+    return render_template('link.html', url='{}'.format(
+        url_for('show', _external=True, msg_id=msg_id)))
 
 
 @application.route('/add', methods=['POST', 'GET'])
