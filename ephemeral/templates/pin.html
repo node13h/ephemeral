@@ -4,12 +4,10 @@
   <p>
     <strong>Message will self-destruct once you view it</strong>
   </p>
-  <p>
-    <form method="post">
-      <label for="pin">PIN</label>
-      <input type="password" name="pin" id="pin" maxlength="6" required>
-      <input type="hidden" name="_csrf_token" value="{{csrf_token}}" />
-      <input type="submit" value="Show">
-    </form>
-  </p>
+  <form method="post">
+    <label for="pin_input">PIN</label>
+    <input type="password" name="pin" id="pin_input" maxlength="6" size="6" class="pin" required>
+    <input type="hidden" name="_csrf_token" value="{{csrf_token}}" />
+    <input type="submit" value="Show">
+  </form>
 {% endblock %}

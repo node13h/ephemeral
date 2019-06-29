@@ -4,7 +4,7 @@ COPY . /dist
 
 WORKDIR /dist
 
-RUN apk add --no-cache gcc g++ make libffi-dev openssl-dev && python3 setup.py install && apk del gcc g++ make libffi-dev openssl-dev
+RUN apk add --no-cache gcc g++ make libffi-dev openssl-dev && python3 setup.py install && rm -rf -- /dist/* && apk del gcc g++ make libffi-dev openssl-dev
 
 EXPOSE 8080
 

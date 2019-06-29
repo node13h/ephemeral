@@ -1,1 +1,5 @@
-# ephemeral - Self-destructing notes
+# ephemeral - Self-destructing messages
+
+## Highlights
+
+- Simple, easy-to-audit code
