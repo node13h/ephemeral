@@ -52,14 +52,14 @@ def root():
 def show(msg_id):
     if request.method == 'POST':
         try:
-            message = get_message(msg_id, request.form['pin'])
+            body = get_message(msg_id, request.form['pin'])
         except MessageNotFoundError:
             return render_template('not_found.html', msg_id=msg_id), 404
         except IncorrectPinError:
             pass
         else:
             logger.info('SHOW {}'.format(msg_id))
-            response = make_response(render_template('show.html', message=message))
+            response = make_response(render_template('show.html', body=body))
 
             response.headers['Cache-Control'] = 'no-cache, no-store, must-revalidate'
             response.headers['Pragma'] = 'no-cache'

@@ -19,4 +19,15 @@
 
 .message {
     font-size: larger;
+    font-family: monospace, monospace;
+    border: solid 1px lightgray;
+    display: inline-block;
+    vertical-align: middle;
+    text-align: left;
+    padding: 10px;
+}
+
+.pin {
+    border: solid 1px lightgray;
+    padding: 10px;
 }
