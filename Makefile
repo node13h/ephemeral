@@ -5,7 +5,7 @@ APP_INSTANCE_URL = http://localhost:8080
 
 VERSION = $(shell cat VERSION)
 
-.PHONY: assets sdist dev-server test develop build-image push-image compose-build compose-up compose-down compose-ps e2e-test release-start release-finish release
+.PHONY: assets clean sdist dev-server test develop build-image push-image compose-build compose-up compose-down compose-ps e2e-test release-start release-finish release
 
 all:
 	true
