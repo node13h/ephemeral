@@ -2,7 +2,7 @@ DOCKER_TAG := latest
 DOCKER_REPOSITORY := docker.io/alikov/ephemeral
 APP_INSTANCE_URL = http://localhost:8080
 
-.PHONE: assets sdist dev-server test develop build-image push-image
+.PHONE: assets sdist dev-server test develop build-image push-image compose-build compose-up compose-down compose-ps e2e-test release-start release-finish release
 
 all:
 	true
@@ -42,3 +42,11 @@ compose-ps:
 
 e2e-test:
 	cd behave && pipenv sync && pipenv run behave -D app_base_url=$(APP_INSTANCE_URL)
+
+release-start:
+	bash release.sh start
+
+release-finish:
+	bash release.sh finish
+
+release: release-start release-finish
