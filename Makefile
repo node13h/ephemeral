@@ -15,6 +15,7 @@ assets:
 
 clean:
 	rm -rf dist
+	rm -rf ./ephemeral/static/node_modules
 
 sdist: assets dist/ephemeral-$(VERSION).tar.gz
 
