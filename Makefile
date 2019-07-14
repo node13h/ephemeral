@@ -1,8 +1,11 @@
 DOCKER_TAG := latest
 DOCKER_REPOSITORY := docker.io/alikov/ephemeral
+
 APP_INSTANCE_URL = http://localhost:8080
 
-.PHONE: assets sdist dev-server test develop build-image push-image
+VERSION = $(shell cat VERSION)
+
+.PHONY: assets sdist dev-server test develop build-image push-image compose-build compose-up compose-down compose-ps e2e-test release-start release-finish release
 
 all:
 	true
@@ -10,7 +13,12 @@ all:
 assets:
 	yarnpkg install --modules-folder ./ephemeral/static/node_modules
 
-sdist: assets
+clean:
+	rm -rf dist
+
+sdist: assets dist/ephemeral-$(VERSION).tar.gz
+
+dist/ephemeral-$(VERSION).tar.gz:
 	python3 setup.py sdist
 
 dev-server:
@@ -42,3 +50,11 @@ compose-ps:
 
 e2e-test:
 	cd behave && pipenv sync && pipenv run behave -D app_base_url=$(APP_INSTANCE_URL)
+
+release-start:
+	bash release.sh start
+
+release-finish:
+	bash release.sh finish
+
+release: release-start release-finish
