@@ -29,10 +29,13 @@ push-image: build-image
 	docker push $(DOCKER_REPOSITORY):$(DOCKER_TAG)
 
 compose-up:
-	EPHEMERAL_SECRET_KEY=hunter2 docker-compose up
+	EPHEMERAL_SECRET_KEY=hunter2 docker-compose up -d
 
 compose-down:
 	EPHEMERAL_SECRET_KEY=hunter2 docker-compose down -v
 
+compose-ps:
+	EPHEMERAL_SECRET_KEY=hunter2 docker-compose ps
+
 e2e-test:
-	cd behave && pipenv run behave -D app_base_url=$(APP_INSTANCE_URL)
+	cd behave && pipenv sync && pipenv run behave -D app_base_url=$(APP_INSTANCE_URL)
