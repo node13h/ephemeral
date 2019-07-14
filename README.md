@@ -32,7 +32,7 @@ Ephemeral uses Redis as the data store. Assuming Redis is running on `localhost`
 EPHEMERAL_REDIS_HOST=localhost EPHEMERAL_SECRET_KEY=hunter2 ephemeral.sh 0.0.0.0:8080
 ```
 
-will start the application listning on port 5000 on all network interfaces.
+will start the application listning on port 8080 on all network interfaces.
 
 Point your browser at http://localhost:8080/add to add a message.
 
