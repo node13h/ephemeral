@@ -28,6 +28,9 @@ build-image:
 push-image: build-image
 	docker push $(DOCKER_REPOSITORY):$(DOCKER_TAG)
 
+compose-build:
+	EPHEMERAL_SECRET_KEY=hunter2 docker-compose build
+
 compose-up:
 	EPHEMERAL_SECRET_KEY=hunter2 docker-compose up -d
 
