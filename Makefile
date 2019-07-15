@@ -5,7 +5,7 @@ APP_INSTANCE_URL = http://localhost:8080
 
 VERSION = $(shell cat VERSION)
 
-.PHONY: assets clean sdist dev-server test develop build-image push-image compose-build compose-up compose-down compose-ps e2e-test release-start release-finish release
+.PHONY: assets clean sdist dev-server test develop build-image push-image compose-build compose-up compose-down compose-ps e2e-test release-start release-finish release publish
 
 all:
 	true
@@ -21,6 +21,9 @@ sdist: assets dist/ephemeral-$(VERSION).tar.gz
 
 dist/ephemeral-$(VERSION).tar.gz:
 	python3 setup.py sdist
+
+publish:
+	twine upload dist/*
 
 dev-server:
 	FLASK_APP=ephemeral.wsgi:application FLASK_ENV=development flask run
