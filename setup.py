@@ -18,7 +18,7 @@ setup(
 
     version=version,
 
-    description='Self-destructing notes',
+    description='Self-destructing messages',
     long_description=long_description,
 
     url='https://github.com/node13h/ephemeral',
