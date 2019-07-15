@@ -20,6 +20,7 @@ setup(
 
     description='Self-destructing messages',
     long_description=long_description,
+    long_description_content_type='text/markdown',
 
     url='https://github.com/node13h/ephemeral',
 
