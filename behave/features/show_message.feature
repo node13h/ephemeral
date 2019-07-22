@@ -50,6 +50,3 @@ Feature: Reading messages
 
     Then the response status code is 403
     And the response does not contain "foo"
-
-
- # TODO: check message is shown only once
