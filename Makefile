@@ -73,5 +73,5 @@ dist/ephemeral-$(VERSION).tar.gz:
 	python3 setup.py sdist
 
 publish: test dist/ephemeral-$(VERSION).tar.gz
-	pipenv run twine upload dist/ephemeral-$(VERSION).tar.gz:
+	pipenv run twine upload dist/ephemeral-$(VERSION).tar.gz
 
