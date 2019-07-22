@@ -17,7 +17,7 @@ lase = "~=0.2.3"
 docutils = "!=0.15.post1"
 
 [packages]
-lase = {editable = true,path = "."}
+ephemeral = {editable = true,path = "."}
 
 [requires]
 python_version = "3.7"
