@@ -42,19 +42,21 @@ Point your browser at http://localhost:8080/add to add a message.
 Prerequisites:
 
 - Python 3
-- pip
+- pipenv
 
-### Editable installation in current environment
+Initialize a virtualenv with dev dependencies installed:
 
 ```sh
 make develop
 ```
+
 
 ### Running unit-tests
 
 ```sh
 make test
 ```
+
 
 ### Starting a development instance of the application
 
@@ -63,6 +65,7 @@ Start the application in development mode with debugging enabled:
 ```sh
 make dev-server
 ```
+
 
 ### Starting/stopping a development Docker stack
 
@@ -93,14 +96,32 @@ make compose-down
 
 ### Running E2E tests
 
-Prerequisites:
-
-- pipenv
-
 Start a stack and run Behave tests against it:
 
 ```sh
 make compose-up
 
 make e2e-test
+```
+
+
+### Starting a release
+
+```sh
+make release-start
+```
+
+
+### Finishing a release
+
+```sh
+make release-finish
+```
+
+
+### Building and publishing the source distribution for the version X.Y.Z:
+
+```sh
+git checkout X.Y.Z
+make publish
 ```
