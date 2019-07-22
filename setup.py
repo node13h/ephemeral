@@ -41,10 +41,10 @@ setup(
 
     # See https://packaging.python.org/en/latest/requirements.html
     install_requires=[
-        'Flask>=1.0,<2.0',
-        'gunicorn',
-        'pycrypto',
-        'redis'
+        'Flask~=1.1',
+        'gunicorn~=19.9',
+        'pycrypto~=2.6',
+        'redis~=3.2'
     ],
 
     scripts=['ephemeral.sh'],
