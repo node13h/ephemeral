@@ -1,11 +1,16 @@
+PROJECT := ephemeral
+VERSION = $(shell cat VERSION)
+SDIST_TARBALL = dist/$(PROJECT)-$(VERSION).tar.gz
+
 DOCKER_TAG := latest
 DOCKER_REPOSITORY := docker.io/alikov/ephemeral
 
 APP_INSTANCE_URL = http://localhost:8080
 
-VERSION = $(shell cat VERSION)
+export RELEASE_REMOTE := origin
+export RELEASE_PUBLISH := 0
 
-.PHONY: all assets clean develop shell lint test update-deps dev-server build-image push-image compose-build compose-up compose-down compose-ps e2e-test release-start release-finish release sdist publish
+.PHONY: all assets clean develop shell lint test update-deps dev-server build-image push-image compose-build compose-up compose-down compose-ps e2e-test release-start release-finish sdist publish
 
 all:
 	true
@@ -18,6 +23,7 @@ clean:
 	rm -rf build
 	rm -rf *.egg-info
 	rm -rf ./ephemeral/static/node_modules
+	rm -f Pipfile.lock
 	pipenv --rm || true
 
 develop:
@@ -60,18 +66,16 @@ e2e-test:
 	cd behave && pipenv sync && pipenv run behave -D app_base_url=$(APP_INSTANCE_URL)
 
 release-start: test
-	pipenv run lase --remote origin start $${RELEASE_VERSION:+--version "$${RELEASE_VERSION}"}
+	pipenv run lase $${RELEASE_REMOTE:+--remote "$${RELEASE_REMOTE}"} start $${RELEASE_VERSION:+--version "$${RELEASE_VERSION}"}
 
 release-finish:
-	pipenv run lase --remote origin finish
+	pipenv run lase $${RELEASE_REMOTE:+--remote "$${RELEASE_REMOTE}"} finish
+	if [ "$${RELEASE_PUBLISH}" -eq 1 ]; then $(MAKE) $(lastword $(MAKEFILE_LIST)) publish; fi
 
-release: release-start release-finish
+sdist: assets $(SDIST_TARBALL)
 
-sdist: assets dist/ephemeral-$(VERSION).tar.gz
-
-dist/ephemeral-$(VERSION).tar.gz:
+$(SDIST_TARBALL):
 	python3 setup.py sdist
 
-publish: test dist/ephemeral-$(VERSION).tar.gz
-	pipenv run twine upload dist/ephemeral-$(VERSION).tar.gz
-
+publish: test $(SDIST_TARBALL)
+	pipenv run twine upload $(SDIST_TARBALL)

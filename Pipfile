@@ -12,7 +12,7 @@ flake8 = "~=3.7"
 pytest = "~=5.0"
 flake8-todos = "~=0.1.3"
 twine = "~=1.13"
-lase = "~=0.2.3"
+lase = "~=0.3.0"
 # Work around https://github.com/pypa/pipenv/issues/3865
 docutils = "!=0.15.post1"
 
