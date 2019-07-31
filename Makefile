@@ -70,7 +70,7 @@ release-start: test
 
 release-finish:
 	pipenv run lase $${RELEASE_REMOTE:+--remote "$${RELEASE_REMOTE}"} finish
-	if [ "$${RELEASE_PUBLISH}" -eq 1 ]; then $(MAKE) $(lastword $(MAKEFILE_LIST)) publish; fi
+	if [ "$${RELEASE_PUBLISH}" -eq 1 ]; then $(MAKE) -f $(lastword $(MAKEFILE_LIST)) publish; fi
 
 sdist: assets $(SDIST_TARBALL)
 
