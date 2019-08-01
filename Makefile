@@ -10,7 +10,7 @@ APP_INSTANCE_URL = http://localhost:8080
 export RELEASE_REMOTE := origin
 export RELEASE_PUBLISH := 0
 
-.PHONY: all assets clean develop shell lint test update-deps dev-server build-image push-image compose-build compose-up compose-down compose-ps e2e-test release-start release-finish sdist publish
+.PHONY: all assets clean develop shell lint build test update-deps dev-server build-image push-image compose-build compose-up compose-down compose-ps e2e-test release-start release-finish sdist publish
 
 all:
 	true
@@ -24,7 +24,7 @@ clean:
 	rm -rf *.egg-info
 	rm -rf ./ephemeral/static/node_modules
 	rm -f Pipfile.lock
-	pipenv --rm || true
+	-pipenv --rm
 
 develop:
 	pipenv install --dev
@@ -35,7 +35,10 @@ shell:
 lint:
 	pipenv run flake8 --max-line-length=119 --exclude=.git,__pycache__,.tox,.eggs,*.egg
 
-test: lint
+build:
+	python3 setup.py build
+
+test: lint build
 	pipenv run pytest --verbose
 
 update-deps:
