@@ -10,7 +10,7 @@ APP_INSTANCE_URL = http://localhost:8080
 export RELEASE_REMOTE := origin
 export RELEASE_PUBLISH := 0
 
-.PHONY: all assets clean develop shell lint build test update-deps dev-server build-image push-image compose-build compose-up compose-down compose-ps e2e-test release-start release-finish sdist publish
+.PHONY: all assets clean mrproper develop shell lint build test update-deps dev-server build-image push-image compose-build compose-up compose-down compose-ps e2e-test release-start release-finish sdist publish
 
 all:
 	true
@@ -24,6 +24,8 @@ clean:
 	rm -rf *.egg-info
 	rm -rf ./ephemeral/static/node_modules
 	rm -f Pipfile.lock
+
+mrproper: clean
 	-pipenv --rm
 
 develop:
@@ -71,7 +73,7 @@ e2e-test:
 release-start: test
 	pipenv run lase $${RELEASE_REMOTE:+--remote "$${RELEASE_REMOTE}"} start $${RELEASE_VERSION:+--version "$${RELEASE_VERSION}"}
 
-release-finish:
+release-finish: test
 	pipenv run lase $${RELEASE_REMOTE:+--remote "$${RELEASE_REMOTE}"} finish
 	if [ "$${RELEASE_PUBLISH}" -eq 1 ]; then $(MAKE) -f $(lastword $(MAKEFILE_LIST)) publish; fi
 
