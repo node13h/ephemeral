@@ -10,7 +10,7 @@ APP_INSTANCE_URL = http://localhost:8080
 export RELEASE_REMOTE := origin
 export RELEASE_PUBLISH := 0
 
-.PHONY: all assets clean mrproper develop shell lint build test update-deps dev-server build-image push-image compose-build compose-up compose-down compose-ps e2e-test release-start release-finish sdist publish
+.PHONY: all assets clean mrproper develop shell lint build test update-deps dev-server build-image push-image compose-up compose-down compose-ps e2e-test release-start release-finish sdist publish
 
 all:
 	true
@@ -55,14 +55,11 @@ build-image:
 push-image: build-image
 	docker push $(DOCKER_REPOSITORY):$(DOCKER_TAG)
 
-compose-build:
-	EPHEMERAL_SECRET_KEY=hunter2 docker-compose build
-
 compose-up:
-	EPHEMERAL_SECRET_KEY=hunter2 docker-compose up -d
+	EPHEMERAL_SECRET_KEY=hunter2 docker-compose up --build -d
 
 compose-down:
-	EPHEMERAL_SECRET_KEY=hunter2 docker-compose down -v
+	EPHEMERAL_SECRET_KEY=hunter2 docker-compose down -v --rmi local
 
 compose-ps:
 	EPHEMERAL_SECRET_KEY=hunter2 docker-compose ps
