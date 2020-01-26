@@ -12,6 +12,7 @@ __pycache__/
 dist/
 build/
 Pipfile.lock
+!behave/Pipfile.lock
 
 # Yarn
 
