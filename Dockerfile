@@ -1,4 +1,4 @@
-FROM python:3.7.3-alpine
+FROM python:3.7.5-alpine3.10
 
 COPY . /dist
 
