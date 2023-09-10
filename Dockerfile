@@ -1,10 +1,10 @@
-FROM python:3.7.3-alpine
+FROM python:3.11.5-alpine3.18
 
-COPY . /dist
+ARG SDIST_TARBALL
 
-WORKDIR /dist
+COPY dist/${SDIST_TARBALL} /dist/${SDIST_TARBALL}
 
-RUN apk add --no-cache gcc g++ make libffi-dev openssl-dev && python3 setup.py install && rm -rf -- /dist/* && apk del gcc g++ make libffi-dev openssl-dev
+RUN pip3 install dist/${SDIST_TARBALL}
 
 EXPOSE 8080
 

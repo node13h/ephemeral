@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
 
-# Copyright (C) 2019 Sergej Alikov <sergej.alikov@gmail.com>
+# Copyright (C) 2019-2023 Sergej Alikov <sergej.alikov@gmail.com>
 
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as published by

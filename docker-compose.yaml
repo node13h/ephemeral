@@ -3,7 +3,7 @@
 version: '3'
 services:
   app:
-    build: .
+    image: ${EPHEMERAL_IMAGE}
     environment:
       EPHEMERAL_REDIS_HOST: redis
       EPHEMERAL_SECRET_KEY: "${EPHEMERAL_SECRET_KEY}"
