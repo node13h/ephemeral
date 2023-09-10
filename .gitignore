@@ -17,3 +17,5 @@ Pipfile.lock
 # Yarn
 
 node_modules/
+
+.coverage

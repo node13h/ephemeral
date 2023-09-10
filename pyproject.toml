@@ -1,0 +1,48 @@
+[tool.poetry]
+name = "ephemeral"
+version = "0.1.5"
+description = "Self-destructing messages"
+authors = ["Sergej Alikov <sergej@alikov.com>"]
+license = "MIT"
+repository = "https://github.com/node13h/ephemeral"
+readme = "README.md"
+include = [
+  "src/ephemeral/static/node_modules/normalize.css/normalize.css"
+]
+packages = [
+  { include = "ephemeral", from = "src" }
+]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+Flask = "^2.3"
+gunicorn = "^21.2"
+cryptography = "^41.0.3"
+redis = "^5.0"
+
+[tool.poetry.dev-dependencies]
+pytest = "^7.4.0"
+black = "^23.9.0"
+flake8 = "^6.1.0"
+isort = "^5.12.0"
+mypy = "^1.5.1"
+coverage = "^6.3.1"
+
+[tool.poetry.scripts]
+ephemeral = {reference = "ephemeral.sh", type = "file"}
+
+[tool.isort]
+profile = "black"
+src_paths = ["src", "tests"]
+
+[tool.pytest.ini_options]
+addopts = [
+  "--import-mode=importlib",
+]
+
+[tool.coverage.run]
+source = ["src"]
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"

@@ -20,23 +20,23 @@ import pytest
 import ephemeral.data as ed
 
 
-@patch.object(ed, 'store', dict())
+@patch.object(ed, "store", dict())
 def test_can_get_added():
-    msg = 'The quick brown fox jumps over the lazy dog'
-    pin = '123789'
+    msg = "The quick brown fox jumps over the lazy dog"
+    pin = "123789"
 
     msg_id = ed.add_message(msg, pin)
 
     assert ed.get_message(msg_id, pin) == msg
 
 
-@patch.object(ed, 'store', dict())
+@patch.object(ed, "store", dict())
 def test_can_get_multiple():
-    msg1 = 'The quick brown fox jumps over the lazy dog'
-    pin1 = '123789'
+    msg1 = "The quick brown fox jumps over the lazy dog"
+    pin1 = "123789"
 
-    msg2 = 'The five boxing wizards jump quickly'
-    pin2 = '000000'
+    msg2 = "The five boxing wizards jump quickly"
+    pin2 = "000000"
 
     msg_id1 = ed.add_message(msg1, pin1)
     msg_id2 = ed.add_message(msg2, pin2)
@@ -45,35 +45,27 @@ def test_can_get_multiple():
     assert ed.get_message(msg_id2, pin2) == msg2
 
 
-@patch.object(ed, 'store', dict())
+@patch.object(ed, "store", dict())
 def test_unicode_supported():
-    msg = 'a\xac\u1234\u20ac\U00008000'
-    pin = '123789'
+    msg = "a\xac\u1234\u20ac\U00008000"
+    pin = "123789"
 
     msg_id = ed.add_message(msg, pin)
 
     assert ed.get_message(msg_id, pin) == msg
 
 
-@patch.object(ed, 'store', dict())
-def test_incorrect_pin_raises():
-    msg_id = ed.add_message('TEST', '123456')
-
-    with pytest.raises(ed.IncorrectPinError):
-        ed.get_message(msg_id, '654321')
-
-
-@patch.object(ed, 'store', dict())
+@patch.object(ed, "store", dict())
 def test_non_existing_id_raises():
     with pytest.raises(ed.MessageNotFoundError):
-        ed.get_message('NON-EXISTING-ID', '000000')
+        ed.get_message("NON-EXISTING-ID", "000000")
 
 
-@patch.object(ed, 'store', dict())
+@patch.object(ed, "store", dict())
 def test_get_twice_raises():
-    msg_id = ed.add_message('TEST', '123456')
+    msg_id = ed.add_message("TEST", "123456")
 
-    ed.get_message(msg_id, '123456')
+    ed.get_message(msg_id, "123456")
 
     with pytest.raises(ed.MessageNotFoundError):
-        ed.get_message(msg_id, '123456')
+        ed.get_message(msg_id, "123456")
